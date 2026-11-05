@@ -38,6 +38,12 @@ export default async (request) => {
     return json({ success: false, error: "Telegram is not configured yet. Please contact the site administrator." }, 500);
   }
 
+  // A bot cannot message itself: the chat ID must be the customer-facing chat, not the bot's own ID.
+  if (String(chatId).trim() === String(token).split(":")[0]) {
+    console.error("TELEGRAM_CHAT_ID is set to the bot's own ID. Set it to the ID of the chat that should receive briefs.");
+    return json({ success: false, error: "Telegram is not configured correctly yet. Please contact GOFERE." }, 500);
+  }
+
   try {
     const form = await request.formData();
     const fields = [];
