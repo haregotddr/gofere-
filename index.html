@@ -1,0 +1,164 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>GOFERE | Design Request Portal</title>
+<style>
+:root{--ink:#181818;--muted:#737373;--line:#e7e7e7;--paper:#fff;--bg:#f5f5f4;--accent:#6b35e8;--accent2:#8b5cf6}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 Inter,Arial,sans-serif}
+.topbar{height:62px;background:#111;color:#fff;display:flex;align-items:center;justify-content:space-between;padding:0 max(22px,calc((100vw - 980px)/2));}
+.brand{display:flex;align-items:center;gap:12px;font-weight:800;letter-spacing:.16em;font-size:13px}.brand img{height:28px;max-width:120px;object-fit:contain;filter:brightness(0) invert(1)}
+.topnote{font-size:12px;color:#c9c9c9}.wrap{max-width:820px;margin:36px auto 80px;padding:0 18px}
+.progressline{display:flex;gap:6px;margin:0 0 22px}.progressline span{height:4px;background:#ddd;border-radius:8px;flex:1}.progressline span.active{background:var(--accent)}
+.stepmeta{display:flex;justify-content:space-between;color:#777;font-size:12px;margin-bottom:10px}
+.panel{background:var(--paper);border:1px solid #ececec;border-radius:16px;padding:clamp(22px,4vw,42px);box-shadow:0 10px 35px #00000008}
+h1{font-size:30px;line-height:1.15;margin:0 0 8px;letter-spacing:-.04em}h2{font-size:19px;margin:30px 0 14px;letter-spacing:-.02em}h3{font-size:15px;margin:22px 0 10px}
+.sub{color:var(--muted);margin:0 0 28px}.field{margin:18px 0}.field>label,.label{display:block;font-weight:650;margin-bottom:7px}.req{color:#d12d4b}
+input[type=text],input[type=url],textarea,select{width:100%;border:1px solid #dcdcdc;border-radius:9px;padding:12px 13px;font:inherit;background:#fff;outline:none}
+input:focus,textarea:focus,select:focus{border-color:var(--accent);box-shadow:0 0 0 3px #6b35e81a}textarea{min-height:96px;resize:vertical}
+.hint{font-size:12px;color:#888;margin-top:5px}.grid2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.choicegrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.choice{border:1px solid var(--line);border-radius:10px;padding:12px;display:flex;gap:10px;align-items:center;cursor:pointer;transition:.15s;background:#fff;min-height:48px}
+.choice:hover{border-color:#b8a5ef}.choice:has(input:checked){border-color:var(--accent);background:#f7f3ff;box-shadow:inset 0 0 0 1px var(--accent)}
+.choice input{accent-color:var(--accent)}.cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.imagechoice{border:1px solid var(--line);border-radius:12px;padding:9px;text-align:center;cursor:pointer;background:#fff}
+.imagechoice:has(input:checked){border:2px solid var(--accent);padding:8px;background:#f8f5ff}
+.imagechoice img{width:100%;height:116px;object-fit:contain;display:block;margin-bottom:6px}.imagechoice span{font-size:13px;font-weight:600}
+.imagechoice input{accent-color:var(--accent)}
+.upload{border:1.5px dashed #cfcfcf;border-radius:12px;padding:22px;text-align:center;background:#fafafa;color:#666}
+.upload input{max-width:100%;margin-top:10px}.hidden{display:none!important}
+.actions{display:flex;justify-content:space-between;align-items:center;margin-top:30px;gap:12px}
+button{border:0;border-radius:9px;padding:12px 22px;font:inherit;font-weight:650;cursor:pointer}
+.primary{background:var(--accent);color:#fff}.primary:hover{background:#5426c4}.secondary{background:#f0f0f0;color:#333}.textbtn{background:transparent;color:#777}
+.notice{border-radius:10px;background:#f4f0ff;color:#4c2aa3;padding:13px 15px;margin:18px 0;font-size:13px}
+.tag{display:inline-block;background:#f1edff;color:#5b35bc;border-radius:20px;padding:4px 9px;font-size:11px;font-weight:700;margin-bottom:12px}
+.checkline{display:flex;gap:10px;align-items:flex-start;margin:12px 0}.checkline input{margin-top:5px;accent-color:var(--accent)}
+.footer{text-align:center;color:#999;font-size:12px;margin-top:22px}
+.success{text-align:center;padding:50px 12px}.success .tick{width:58px;height:58px;border-radius:50%;display:grid;place-items:center;background:#e9f8ef;color:#19864b;font-size:28px;margin:0 auto 20px}
+.smallhr{border:0;border-top:1px solid var(--line);margin:26px 0}
+@media(max-width:620px){.wrap{margin:20px auto 50px}.panel{padding:22px 17px}h1{font-size:25px}.grid2,.choicegrid{grid-template-columns:1fr}.cards{grid-template-columns:repeat(2,minmax(0,1fr))}.topnote{display:none}.imagechoice img{height:100px}}
+</style></head>
+<body>
+<header class="topbar"><div class="brand"><img src="assets/gofere-logo.png" alt="GOFERE"><span>DESIGN REQUEST PORTAL</span></div><div class="topnote">Custom teamwear · Design brief</div></header>
+<main class="wrap">
+<div class="progressline" id="progress"><span class="active"></span><span></span><span></span><span></span></div>
+<div class="stepmeta"><span id="stepLabel">PAGE 1 OF 4</span><span>About your design</span></div>
+<form id="briefForm">
+<section class="panel step" data-step="0">
+<span class="tag">PAGE 1 · ABOUT YOU</span><h1>Tell us about your team.</h1><p class="sub">Tell us who this design is for. It takes about 5 minutes.</p>
+<div class="grid2">
+<div class="field"><label>Customer / Club name <b class="req">*</b></label><input name="club" type="text" required placeholder="e.g. Saint George FC"></div>
+<div class="field"><label>Contact Person <b class="req">*</b></label><input name="contact" type="text" required placeholder="Your full name"></div>
+</div>
+<div class="field"><label>Email address</label><input name="email" type="text" placeholder="you@example.com"></div>
+<div class="field"><label>Phone / WhatsApp</label><input name="phone" type="text" placeholder="+251 ..."></div>
+<div class="actions"><span></span><button class="primary next" type="button">Next →</button></div>
+</section>
+
+<section class="panel step hidden" data-step="1">
+<span class="tag">PAGE 2 · DESIGN SPECIFICATIONS</span><h1>What are we making?</h1><p class="sub">Choose your garment and then select the details that match your preferred style.</p>
+<div class="field"><label>Which item do you want? <b class="req">*</b></label>
+<div class="choicegrid" id="itemChoices">
+<label class="choice"><input type="radio" name="item" value="Football jersey" required> Football jersey</label>
+<label class="choice"><input type="radio" name="item" value="Basketball Jersey"> Basketball jersey</label>
+<label class="choice"><input type="radio" name="item" value="Track Suit"> Track suit</label>
+<label class="choice"><input type="radio" name="item" value="Accessories"> Accessories</label></div></div>
+<div id="football" class="conditional hidden">
+<hr class="smallhr"><h2>Football jersey</h2><div class="choicegrid">
+<label class="choice"><input type="radio" name="footballType" value="T-shirt"> T-shirt</label><label class="choice"><input type="radio" name="footballType" value="Short"> Short</label><label class="choice"><input type="radio" name="footballType" value="Full set"> Full set</label></div>
+<h2>Style details</h2><h3>Football jersey shirt style</h3><div class="cards">
+<label class="imagechoice"><input type="radio" name="footballShirt" value="Set-in"><img src="assets/football-shirt.png"><span>Set-in</span></label>
+<label class="imagechoice"><input type="radio" name="footballShirt" value="Raglan"><img src="assets/football-shirt-style.png"><span>Raglan</span></label></div>
+<h3>Football collar styles</h3><div class="cards">
+<label class="imagechoice"><input type="radio" name="footballCollar" value="V-neck"><img src="assets/collar-v-neck.png"><span>V-neck</span></label>
+<label class="imagechoice"><input type="radio" name="footballCollar" value="O-neck"><img src="assets/collar-o-neck.png"><span>O-neck</span></label>
+<label class="imagechoice"><input type="radio" name="footballCollar" value="Polo with buttons"><img src="assets/collar-polo-buttons.png"><span>Polo W buttons</span></label>
+<label class="imagechoice"><input type="radio" name="footballCollar" value="V-neck Polo"><img src="assets/collar-v-polo.png"><span>V-neck Polo</span></label></div>
+<h3>Football sleeve styles</h3><div class="choicegrid">
+<label class="choice"><input type="radio" name="footballSleeve" value="Long"> Long</label><label class="choice"><input type="radio" name="footballSleeve" value="Short"> Short</label><label class="choice"><input type="radio" name="footballSleeve" value="Strips"> Strips</label></div>
+<h3>Football jersey shorts styles</h3><div class="cards">
+<label class="imagechoice"><input type="radio" name="footballShorts" value="No seam"><img src="assets/football-shorts.png"><span>No seam</span></label>
+<label class="imagechoice"><input type="radio" name="footballShorts" value="Debol seam"><img src="assets/shorts-debol-seam.png"><span>Debol seam</span></label>
+<label class="imagechoice"><input type="radio" name="footballShorts" value="Side seam"><img src="assets/shorts-side-seam.png"><span>Side seam</span></label>
+<label class="imagechoice"><input type="radio" name="footballShorts" value="Bottom seam"><img src="assets/shorts-bottom-seam.png"><span>Bottom seam</span></label></div>
+</div>
+<div id="basketball" class="conditional hidden"><hr class="smallhr"><h2>Basketball jersey</h2><div class="choicegrid">
+<label class="choice"><input type="radio" name="basketType" value="T-shirt"> T-shirt</label><label class="choice"><input type="radio" name="basketType" value="Short"> Short</label><label class="choice"><input type="radio" name="basketType" value="Full set"> Full set</label></div>
+<h2>Style details</h2><h3>Basketball jersey shirt style</h3><div class="cards">
+<label class="imagechoice"><input type="radio" name="basketShirt" value="Set-in"><img src="assets/basketball-jersey.png"><span>Set-in</span></label><label class="imagechoice"><input type="radio" name="basketShirt" value="Raglan"><img src="assets/basketball-vest.png"><span>Raglan</span></label></div>
+<h3>Basketball collar styles</h3><div class="choicegrid">
+<label class="choice"><input type="radio" name="basketCollar" value="V-neck"> V-neck</label><label class="choice"><input type="radio" name="basketCollar" value="O-neck"> O-neck</label><label class="choice"><input type="radio" name="basketCollar" value="Button"> Button</label><label class="choice"><input type="radio" name="basketCollar" value="Chinese"> Chinese</label><label class="choice"><input type="radio" name="basketCollar" value="Pollo"> Pollo</label></div>
+<h3>Basketball jersey shorts styles</h3><div class="cards">
+<label class="imagechoice"><input type="radio" name="basketShorts" value="Debol"><img src="assets/basketball-shorts.png"><span>Debol</span></label><label class="imagechoice"><input type="radio" name="basketShorts" value="Side seam"><img src="assets/shorts-side-seam.png"><span>Side seam</span></label></div></div>
+<div id="tracksuit" class="conditional hidden"><hr class="smallhr"><h2>Track suit</h2><div class="choicegrid">
+<label class="choice"><input type="radio" name="trackType" value="Track jackets"> Track jackets</label><label class="choice"><input type="radio" name="trackType" value="Track pants"> Track pants</label><label class="choice"><input type="radio" name="trackType" value="Full set"> Full set</label></div>
+<h3>Track jacket style</h3><div class="choicegrid"><label class="choice"><input type="radio" name="jacketStyle" value="Style 1"> Style 1</label><label class="choice"><input type="radio" name="jacketStyle" value="Style 2"> Style 2</label><label class="choice"><input type="radio" name="jacketStyle" value="Style 3"> Style 3</label></div>
+<h3>Track pants style</h3><div class="choicegrid"><label class="choice"><input type="radio" name="pantsStyle" value="Style 1"> Style 1</label><label class="choice"><input type="radio" name="pantsStyle" value="Style 2"> Style 2</label><label class="choice"><input type="radio" name="pantsStyle" value="Style 3"> Style 3</label></div></div>
+<div id="accessories" class="conditional hidden"><hr class="smallhr"><h2>Accessories</h2><div class="choicegrid">
+<label class="choice"><input type="checkbox" name="accessories" value="Flag"> Flag</label><label class="choice"><input type="checkbox" name="accessories" value="Vest"> Vest</label><label class="choice"><input type="checkbox" name="accessories" value="Cap"> Cap</label><label class="choice"><input type="checkbox" name="accessories" value="Scarf"> Scarf</label></div></div>
+<div class="actions"><button class="secondary prev" type="button">← Back</button><button class="primary next" type="button">Next →</button></div>
+</section>
+
+<section class="panel step hidden" data-step="2">
+<span class="tag">PAGE 3 · DESIGN BRIEF</span><h1>Tell us about your design.</h1><p class="sub">Any ideas or inspiration images you have for your designs.</p>
+<div class="field"><label>How should we start? <b class="req">*</b></label><div class="choicegrid">
+<label class="choice"><input type="radio" name="start" value="Design it from scratch" required> Design it from scratch</label>
+<label class="choice"><input type="radio" name="start" value="Use a photo I like"> Use a photo I like</label>
+<label class="choice"><input type="radio" name="start" value="Reuse a previous GOFERE design"> Reuse a previous GOFERE design</label>
+<label class="choice"><input type="radio" name="start" value="I have finished artwork"> I have finished artwork</label></div></div>
+<div id="reuseFields" class="conditional hidden"><div class="field"><label>Which design should we reuse?</label><input name="reuseDesign" type="text" placeholder="Club name and season, e.g. Saint George 2025 home kit"></div><div class="field"><label>What should change?</label><textarea name="changes"></textarea></div></div>
+<div id="photoFields" class="conditional hidden"><div class="field"><label>Upload your photo or artwork</label><div class="upload">Click to choose a file or drag here<input type="file" name="inspiration" accept="image/*,.pdf"></div><div class="hint">Maximum file size: 10 MB per file.</div></div><div class="field"><label>What should we take from your photo?</label><div class="choicegrid">
+<label class="choice"><input type="checkbox" name="takeFromPhoto" value="Colors"> Colors</label><label class="choice"><input type="checkbox" name="takeFromPhoto" value="Patterns / Graphics"> Patterns / Graphics</label><label class="choice"><input type="checkbox" name="takeFromPhoto" value="Layout / panels"> Layout / panels</label><label class="choice"><input type="checkbox" name="takeFromPhoto" value="Text styles"> Text styles</label><label class="choice"><input type="checkbox" name="takeFromPhoto" value="The whole look"> The whole look</label></div></div></div>
+<div class="field"><label>Anything we must not copy or change?</label><textarea name="dontChange"></textarea></div>
+<div class="grid2"><div class="field"><label>Main colors <b class="req">*</b></label><input name="mainColors" type="text" required placeholder="e.g. red, yellow and green"></div><div class="field"><label>Colors to avoid</label><input name="avoidColors" type="text" placeholder="Optional"></div></div>
+<div class="field"><label>Do you have a Club logo? <b class="req">*</b></label><div class="choicegrid"><label class="choice"><input type="radio" name="hasLogo" value="Yes" required> Yes</label><label class="choice"><input type="radio" name="hasLogo" value="No"> No</label></div></div>
+<div id="logoFields" class="conditional hidden"><div class="field"><label>Upload your Logo</label><div class="upload">Choose logo file<input type="file" name="logo" accept="image/*,.pdf"></div></div><div class="field"><label>Logo URL</label><input name="logoUrl" type="url" placeholder="https://"></div></div>
+<div class="field"><label>Unique logo position request</label><textarea name="logoPosition"></textarea></div>
+<div class="field"><label>Any sponsor logos?</label><div class="choicegrid"><label class="choice"><input type="radio" name="hasSponsors" value="Yes"> Yes</label><label class="choice"><input type="radio" name="hasSponsors" value="No"> No</label></div></div>
+<div id="sponsorFields" class="conditional hidden"><div class="field"><label>Upload sponsor logos</label><div class="upload">Select one or more files<input type="file" name="sponsors" accept="image/*,.pdf" multiple></div></div><div class="field"><label>Sponsor logo placement direction</label><textarea name="sponsorPlacement"></textarea></div></div>
+<div class="field"><label>Do you need names or numbers on the design? <b class="req">*</b></label><div class="choicegrid">
+<label class="choice"><input type="radio" name="namesNumbers" value="No" required> No</label><label class="choice"><input type="radio" name="namesNumbers" value="Numbers only"> Numbers only</label><label class="choice"><input type="radio" name="namesNumbers" value="Names only"> Names only</label><label class="choice"><input type="radio" name="namesNumbers" value="Names and numbers"> Names and numbers</label></div></div>
+<div id="numberFields" class="conditional hidden"><div class="field"><label>Where should they go?</label><div class="choicegrid">
+<label class="choice"><input type="checkbox" name="placement" value="Back name"> Back name</label><label class="choice"><input type="checkbox" name="placement" value="Back number"> Back number</label><label class="choice"><input type="checkbox" name="placement" value="Front number"> Front number</label><label class="choice"><input type="checkbox" name="placement" value="Chest name"> Chest name</label><label class="choice"><input type="checkbox" name="placement" value="Sleeve number"> Sleeve number</label><label class="choice"><input type="checkbox" name="placement" value="Shorts number"> Shorts number</label></div></div>
+<div class="field"><label>Names and numbers list</label><textarea name="namesList" placeholder="One per line, for example: 7 - ABEBE"></textarea></div><div class="field"><label>Upload your list or a photo of it (optional)</label><input type="file" name="namesFile"></div></div>
+<div class="field"><label>Anything else about the design?</label><textarea name="otherDesign"></textarea></div>
+<div class="actions"><button class="secondary prev" type="button">← Back</button><button class="primary next" type="button">Next →</button></div>
+</section>
+
+<section class="panel step hidden" data-step="3">
+<span class="tag">PAGE 4 · BEFORE YOU SEND</span><h1>Before you send your brief</h1><p class="sub">Two quick things to know, then you're done.</p>
+<div class="notice"><b>5 revisions are included with every design</b><br>A revision is one round of changes. Send all your changes together, from your one approver, in one message. Once you approve, the design is final, and later changes are a new request.</div>
+<div class="notice"><b>Some requests cost extra</b><br>Extra services are priced separately. Your sales person confirms the price with you before any work starts.</div>
+<h2>Need any extra services? <span class="hint">(optional, tick all that apply)</span></h2>
+<div class="choicegrid">
+<label class="choice"><input type="checkbox" name="extras" value="Logo redesign"> Logo redesign: a brand-new logo</label>
+<label class="choice"><input type="checkbox" name="extras" value="Logo upscale / rework"> Logo upscale / rework: rebuild a blurry logo so it prints sharp</label>
+<label class="choice"><input type="checkbox" name="extras" value="Custom illustration or pattern"> Custom illustration or pattern</label>
+<label class="choice"><input type="checkbox" name="extras" value="Something else"> Something else</label></div>
+<div class="field"><label>Describe the extra service needed</label><textarea name="extraDescription"></textarea></div>
+<hr class="smallhr"><h2>Before you send, please confirm</h2>
+<label class="checkline"><input type="checkbox" name="confirmRevisions" required><span>I understand my design includes up to 5 revisions <b class="req">*</b></span></label>
+<label class="checkline"><input type="checkbox" name="confirmExtra" required><span>I understand extra services cost extra, and the price will be confirmed before work starts. <b class="req">*</b></span></label>
+<hr class="smallhr"><h2>Add another design to this brief?</h2><div class="choicegrid">
+<label class="choice"><input type="radio" name="another" value="Yes, add another design"> Yes, add another design</label><label class="choice"><input type="radio" name="another" value="No, I'm done" checked> No, I'm done</label></div>
+<div class="actions"><button class="secondary prev" type="button">← Back</button><button class="primary" id="sendBtn" type="submit">Send my design brief</button></div>
+</section>
+<section class="panel step hidden" data-step="4"><div class="success"><div class="tick">✓</div><span class="tag">THANK YOU</span><h1>Thank you!</h1><p class="sub">Your design brief is with the design team.</p><p id="successSummary"></p><button class="primary" type="button" id="newBrief">Start another brief</button></div></section>
+</form>
+<div class="footer">GOFERE · Design Request Portal</div>
+</main>
+<script>
+const steps=[...document.querySelectorAll('.step')];let current=0;
+function showStep(n){current=n;steps.forEach((s,i)=>s.classList.toggle('hidden',i!==n));document.querySelectorAll('#progress span').forEach((s,i)=>s.classList.toggle('active',i<Math.min(n+1,4)));document.getElementById('stepLabel').textContent=n===4?'THANK YOU':'PAGE '+(n+1)+' OF 4';window.scrollTo({top:0,behavior:'smooth'});}
+document.querySelectorAll('.next').forEach(b=>b.addEventListener('click',()=>{const req=[...steps[current].querySelectorAll('[required]')];for(const el of req){if(el.type==='radio'){if(!steps[current].querySelector(`[name="${el.name}"]:checked`)){el.focus();el.reportValidity?.();return;}}else if(!el.checkValidity()){el.reportValidity();return;}}showStep(current+1)}));
+document.querySelectorAll('.prev').forEach(b=>b.addEventListener('click',()=>showStep(current-1)));
+function selected(name){return document.querySelector(`[name="${name}"]:checked`)?.value||''}
+function toggle(id,on){document.getElementById(id).classList.toggle('hidden',!on)}
+document.querySelectorAll('[name=item]').forEach(el=>el.addEventListener('change',()=>{let v=selected('item');toggle('football',v==='Football jersey');toggle('basketball',v==='Basketball Jersey');toggle('tracksuit',v==='Track Suit');toggle('accessories',v==='Accessories')}));
+document.querySelectorAll('[name=start]').forEach(el=>el.addEventListener('change',()=>{let v=selected('start');toggle('reuseFields',v==='Reuse a previous GOFERE design');toggle('photoFields',v==='Use a photo I like'||v==='I have finished artwork')}));
+document.querySelectorAll('[name=hasLogo]').forEach(el=>el.addEventListener('change',()=>toggle('logoFields',selected('hasLogo')==='Yes')));
+document.querySelectorAll('[name=hasSponsors]').forEach(el=>el.addEventListener('change',()=>toggle('sponsorFields',selected('hasSponsors')==='Yes')));
+document.querySelectorAll('[name=namesNumbers]').forEach(el=>el.addEventListener('change',()=>toggle('numberFields',selected('namesNumbers')!=='No')));
+document.getElementById('briefForm').addEventListener('submit',e=>{e.preventDefault();const f=e.currentTarget;if(!f.reportValidity())return;const data=new FormData(f);const club=data.get('club')||'Your club';document.getElementById('successSummary').textContent=`Thank you, ${club}. Your brief has been prepared.`;showStep(4);});
+document.getElementById('newBrief').addEventListener('click',()=>{document.getElementById('briefForm').reset();['football','basketball','tracksuit','accessories','reuseFields','photoFields','logoFields','sponsorFields','numberFields'].forEach(id=>toggle(id,false));showStep(0)});
+</script></body></html>
